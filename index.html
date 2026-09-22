@@ -1,73 +1,72 @@
-<!doctype html>
-<html lang="et"><head>
+<!doctype html><html lang="et"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f5f2"><meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
-<title>Rüht</title>
+<meta name="theme-color" content="#F3F0E8"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><title>Rüht</title>
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f2;color:#171717}
-*{box-sizing:border-box}body{margin:0}.app{max-width:500px;min-height:100vh;margin:auto;padding:calc(20px + env(safe-area-inset-top)) 18px calc(30px + env(safe-area-inset-bottom))}
-.card{background:#fff;border-radius:26px;padding:22px;margin:14px 0;box-shadow:0 10px 35px #0000000b}
-h1{font-size:34px;line-height:1.05;margin:10px 0}h2{font-size:24px;margin:0 0 10px}p{color:#555;line-height:1.48}
-button{width:100%;border:0;border-radius:17px;padding:17px;margin-top:10px;font-size:17px;font-weight:750}
-.primary{background:#171717;color:#fff}.secondary{background:#e9e9e5;color:#171717}
-.pill{display:inline-block;background:#e9e9e5;padding:7px 11px;border-radius:99px;font-size:12px;font-weight:800}
-.hidden{display:none}.scale{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.scale button{padding:11px 0;margin:0;background:#eee;color:#171717}.scale .selected{background:#171717;color:#fff}
-.progress{height:8px;background:#e3e3df;border-radius:10px;overflow:hidden}.progress>div{height:100%;background:#171717}
-.visual{height:185px;border-radius:22px;background:#efefeb;display:flex;align-items:center;justify-content:center;font-size:78px;margin:15px 0}
-.timer{font-size:58px;text-align:center;font-weight:850;margin:18px 0}.meta{font-size:13px;color:#777}.tip{background:#f0f0ec;border-radius:16px;padding:13px;margin-top:14px;font-size:14px;color:#555}
-</style></head>
-<body><main class="app">
+:root{--bg:#f3f0e8;--card:#fffdf8;--ink:#25332d;--muted:#6f786f;--sage:#718d78;--pale:#dfe8dd;--line:#c9d4c8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}button{font:inherit}.app{max-width:500px;min-height:100vh;margin:auto;padding:calc(24px + env(safe-area-inset-top)) 18px calc(32px + env(safe-area-inset-bottom))}
+.card{background:var(--card);border-radius:28px;padding:22px;margin:15px 0;box-shadow:0 12px 35px #39483c10}h1{font-size:38px;line-height:1.03;margin:12px 0}h2{font-size:23px;margin:0 0 8px}p{color:var(--muted);line-height:1.5}.pill{display:inline-block;background:var(--pale);padding:8px 12px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.04em}
+.btn{width:100%;border:0;border-radius:18px;padding:17px;margin-top:10px;font-size:17px;font-weight:800}.primary{background:var(--sage);color:white}.secondary{background:#e8e8df;color:var(--ink)}
+.scale{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:14px}.scale button{border:0;border-radius:13px;padding:12px 0;background:#ecece5;color:var(--ink);font-weight:800}.scale button.selected{background:var(--sage);color:white}
+.hidden{display:none!important}.progress{height:8px;background:#dfe2da;border-radius:10px;overflow:hidden}.progress div{height:100%;background:var(--sage);transition:width .3s}.meta{font-size:13px;color:var(--muted)}
+.visual{height:250px;background:#edf0e8;border-radius:24px;margin:16px 0;overflow:hidden;display:flex;align-items:center;justify-content:center}.visual svg{width:100%;height:100%}
+.timer{font-size:60px;font-weight:900;text-align:center;margin:12px 0}.tip{background:#eef1e9;padding:13px;border-radius:16px;font-size:13px;color:var(--muted);margin-top:14px}
+.overlay{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center}.overlay.hidden{display:none}.count{font-size:112px;font-weight:900;color:var(--sage)}.countSub{font-size:18px;color:var(--muted)}
+.person{stroke:#344039;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;fill:none}.skin{fill:#d7b49b}.guide{stroke:var(--sage);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;fill:none}.wall{stroke:#aeb8ad;stroke-width:8}
+.a-body{transform-origin:150px 120px;animation:body 2s ease-in-out infinite alternate}.a-head{animation:head 1.5s ease-in-out infinite alternate}.a-arms{transform-origin:150px 90px;animation:arms 1.8s ease-in-out infinite alternate}.a-wide{transform-origin:150px 95px;animation:wide 1.7s ease-in-out infinite alternate}.a-shoulder{transform-origin:150px 90px;animation:shoulder 2s ease-in-out infinite}
+@keyframes body{to{transform:rotate(-10deg)}}@keyframes head{to{transform:translateX(-12px)}}@keyframes arms{to{transform:rotate(-13deg)}}@keyframes wide{to{transform:scaleX(1.25)}}@keyframes shoulder{50%{transform:translateY(-7px)}}
+</style></head><body>
+<div id="overlay" class="overlay hidden"><div id="count" class="count">3</div><div id="countSub" class="countSub">Valmis…</div></div>
+<main class="app">
 <section id="home">
 <span class="pill">IGAPÄEVANE 10 MIN</span><h1>Kael & õlad</h1>
-<p>Arvutitööst pinges ülakehale: rindkere liikuvus, kaela kontroll ning abaluude ja ülaselja töö.</p>
+<p>Liikuvus, kaela kontroll ning abaluude ja ülaselja töö arvutitööst pinges ülakehale.</p>
 <div class="card"><h2>Kuidas täna on?</h2><p>Pinge kaelas/õlgades: <b id="preText">–</b>/10</p><div id="preScale" class="scale"></div></div>
-<button id="startFull" class="primary">Alusta 10 min kava</button>
-<button id="startSOS" class="secondary">Kiire 3 min SOS</button>
+<button id="startFull" class="btn primary">Alusta 10 min kava</button><button id="startSOS" class="btn secondary">Kiire 3 min SOS</button>
 <div class="card"><h2>Tänane seis</h2><p id="today">Pole veel tehtud.</p><div id="history" class="meta"></div></div>
 </section>
-
-<section id="work" class="hidden">
-<div class="progress"><div id="bar"></div></div><p id="step" class="meta"></p>
-<div class="card"><h2 id="name"></h2><div id="visual" class="visual"></div><p id="instruction"></p>
-<div id="timer" class="timer"></div>
-<button id="timerButton" class="primary">Käivita taimer</button>
-<button id="done" class="secondary">Tehtud →</button>
+<section id="work" class="hidden"><div class="progress"><div id="bar"></div></div><p id="step" class="meta"></p>
+<div class="card"><h2 id="name"></h2><div id="visual" class="visual"></div><p id="instruction"></p><div id="timer" class="timer"></div>
+<button id="timerButton" class="btn primary">Paus</button><button id="done" class="btn secondary">Tehtud →</button>
 <div class="tip">Kui tekib terav või kätte kiirguv valu, tuimus või nõrkus, lõpeta harjutus.</div></div>
-<button id="quit" class="secondary">← Avalehele</button>
-</section>
-
-<section id="finish" class="hidden">
-<span class="pill">KAVA TEHTUD ✓</span><h1>Valmis.</h1><p>Märgi, kuidas ülakeha pärast kava tundub.</p>
-<div class="card"><h2>Pinge pärast</h2><p><b id="postText">–</b>/10</p><div id="postScale" class="scale"></div></div>
-<button id="save" class="primary">Salvesta tänane trenn</button>
-</section>
-</main>
-<script>
+<button id="quit" class="btn secondary">← Avalehele</button></section>
+<section id="finish" class="hidden"><span class="pill">KAVA TEHTUD ✓</span><h1>Hästi tehtud.</h1><p>Salvestame tänase treeningu koos enne alustamist antud pingehinnanguga.</p><div class="card"><h2 id="finishRating"></h2><p>Järjepidevus on siin olulisem kui täiuslik sooritus.</p></div><button id="save" class="btn primary">Salvesta tänane trenn</button></section>
+</main><script>
 const full=[
-["Rindkere sirutus toolil","8 aeglast kordust","Istu stabiilselt, käed kuklal. Siruta ülaselga rahulikult üle tooli seljatoe. Ära vii liigutust alaselga.","🪑",0],
-["Ukseava rinnavenitus – 1. pool","30 sekundit","Küünarvars uksepiidal. Astu kergelt ette, kuni tunned rinnas õrna venitus­tunnet.","🚪",30],["Ukseava rinnavenitus – 2. pool","30 sekundit","Vaheta poolt ja korda sama rahulikult.","🚪",30],
-["Chin tuck","10 × 5 s","Vaata otse. Libista lõug horisontaalselt taha, nagu teeksid õrna topeltlõua. Ära kalluta pead alla.","🙂",50],
-["Wall slides","10 aeglast kordust","Libista käsi seinal üles ja alla mugavas ulatuses. Hoia õlad kõrvadest eemal.","🙆",0],
-["Kummilindiga sõudmine","2 × 12","Tõmba küünarnukid taha. Lase abaluudel loomulikult liikuda, ära pigista neid jõuga kokku.","🚣",0],
-["Band pull-apart","2 × 10–12","Hoia lint ees ja vii käed kontrollitult külgedele. Rindkere püsib rahulik.","↔️",0],
-["Õlaringid + hingamine","60 sekundit","Tee aeglased õlaringid ja 4–5 rahulikku hingetõmmet. Väljahingamisel lase õlgadel langeda.","🌿",60]];
-const sos=[full[0],full[1],full[2],full[3],full[7]];
-let routine=[],i=0,pre=null,post=null,remaining=0,interval=null;
-const $=x=>document.getElementById(x);
-function screen(id){["home","work","finish"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
-function scale(id,label,setter){for(let n=0;n<=10;n++){let b=document.createElement("button");b.textContent=n;b.onclick=()=>{setter(n);$(label).textContent=n;[...$(id).children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected")};$(id).appendChild(b)}}
-scale("preScale","preText",v=>pre=v);scale("postScale","postText",v=>post=v);
-function start(r){routine=r;i=0;screen("work");render()}
-function render(){clearInterval(interval);interval=null;let x=routine[i];$("bar").style.width=((i+1)/routine.length*100)+"%";$("step").textContent=`Harjutus ${i+1} / ${routine.length}`;$("name").textContent=x[0];$("visual").textContent=x[3];$("instruction").innerHTML=`<b>${x[1]}</b><br><br>${x[2]}`;remaining=x[4];$("timer").textContent=remaining?fmt(remaining):"Kordused";$("timerButton").style.display=remaining?"block":"none";$("timerButton").textContent="Paus"; if(remaining){ startCountdown(); }}
-const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
-function startCountdown(){clearInterval(interval);interval=setInterval(()=>{remaining--;$("timer").textContent=fmt(Math.max(0,remaining));if(remaining<=0){clearInterval(interval);interval=null;$("timerButton").textContent="Valmis ✓";if(navigator.vibrate)navigator.vibrate([150,80,150])}},1000)}
-$("timerButton").onclick=()=>{if(remaining<=0)return;if(interval){clearInterval(interval);interval=null;$("timerButton").textContent="Jätka"}else{$("timerButton").textContent="Paus";startCountdown()}};
-$("done").onclick=()=>{clearInterval(interval);if(++i<routine.length)render();else screen("finish")};
-$("startFull").onclick=()=>start(full);$("startSOS").onclick=()=>start(sos);$("quit").onclick=()=>{clearInterval(interval);screen("home")};
-function dateKey(offset=0){let d=new Date();d.setDate(d.getDate()+offset);return d.toLocaleDateString("en-CA")}
-function refresh(){let v=localStorage.getItem("ruht-"+dateKey());if(v){let x=JSON.parse(v);$("today").textContent=`Tehtud ✓  Pinge ${x.pre??"–"} → ${x.post??"–"}/10`}else $("today").textContent="Pole veel tehtud.";let c=0;for(let k=0;k<30;k++)if(localStorage.getItem("ruht-"+dateKey(-k)))c++;$("history").textContent=`Viimase 30 päeva jooksul: ${c} treeningpäeva`}
-$("save").onclick=()=>{localStorage.setItem("ruht-"+dateKey(),JSON.stringify({pre,post,at:Date.now()}));refresh();screen("home")};refresh();
-if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+{name:"Rindkere sirutus toolil",dose:"8 aeglast kordust",text:"Istu stabiilselt. Siruta ülaselga rahulikult üle tooli seljatoe. Ära vii liigutust alaselga.",kind:"thoracic",sec:0},
+{name:"Ukseava rinnavenitus – 1. pool",dose:"30 sekundit",text:"Küünarvars uksepiidal. Astu kergelt ette, kuni tunned rinnas õrna venitust.",kind:"doorR",sec:30},
+{name:"Ukseava rinnavenitus – 2. pool",dose:"30 sekundit",text:"Vaheta poolt ja korda sama rahulikult.",kind:"doorL",sec:30},
+{name:"Chin tuck",dose:"10 × 5 s",text:"Vaata otse. Libista lõug horisontaalselt taha. Ära kalluta pead alla.",kind:"chin",sec:50},
+{name:"Wall slides",dose:"10 aeglast kordust",text:"Libista käsi seinal üles ja alla mugavas ulatuses. Hoia õlad kõrvadest eemal.",kind:"wall",sec:0},
+{name:"Kummilindiga sõudmine",dose:"2 × 12",text:"Tõmba küünarnukid taha. Lase abaluudel loomulikult liikuda.",kind:"row",sec:0},
+{name:"Band pull-apart",dose:"2 × 10–12",text:"Hoia lint ees ja vii käed kontrollitult külgedele. Rindkere püsib rahulik.",kind:"pull",sec:0},
+{name:"Õlaringid + hingamine",dose:"60 sekundit",text:"Tee aeglased õlaringid ja 4–5 rahulikku hingetõmmet. Väljahingamisel lase õlgadel langeda.",kind:"breathe",sec:60}
+],sos=[full[0],full[1],full[2],full[3],full[7]];
+let routine=[],idx=0,pre=null,remaining=0,timer=null,prepId=0;
+const $=id=>document.getElementById(id);
+function person(extra="",group=""){return `<svg viewBox="0 0 300 230"><g class="${group}"><circle class="skin" cx="150" cy="48" r="24"/><path class="person" d="M150 73V148 M150 92L108 118 M150 92L192 118 M150 146L122 202 M150 146L178 202"/></g>${extra}</svg>`}
+function art(k){
+if(k==="thoracic")return person('<path class="guide" d="M92 76Q150 25 208 76M98 65L88 77L103 82"/>',"a-body");
+if(k==="chin")return `<svg viewBox="0 0 300 230"><path class="person" d="M150 74V165"/><g class="a-head"><circle class="skin" cx="150" cy="48" r="25"/></g><path class="guide" d="M205 48H118M130 37L117 48L130 59"/></svg>`;
+if(k==="doorR")return person('<line class="wall" x1="238" y1="15" x2="238" y2="215"/><g class="a-arms"><path class="guide" d="M150 92L226 66"/></g>');
+if(k==="doorL")return person('<line class="wall" x1="62" y1="15" x2="62" y2="215"/><g class="a-arms"><path class="guide" d="M150 92L74 66"/></g>');
+if(k==="wall")return person('<line class="wall" x1="246" y1="15" x2="246" y2="215"/><g class="a-arms"><path class="guide" d="M150 92L105 40M150 92L195 40"/></g>');
+if(k==="row")return person('<g class="a-wide"><path class="guide" d="M145 94L72 108M155 94L228 108"/><path class="guide" d="M65 108H88M235 108H212"/></g>');
+if(k==="pull")return person('<g class="a-wide"><path class="guide" d="M70 95H230"/><path class="guide" d="M88 84L70 95L88 106M212 84L230 95L212 106"/></g>');
+return person('<path class="guide" d="M100 73Q150 25 200 73M105 74L115 57"/>',"a-shoulder")}
+function screen(id){["home","work","finish"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");window.scrollTo(0,0)}
+for(let n=0;n<=10;n++){const b=document.createElement("button");b.textContent=n;b.onclick=()=>{pre=n;$("preText").textContent=n;[...$("preScale").children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected")};$("preScale").appendChild(b)}
+function prep(cb){const id=++prepId,o=$("overlay"),n=$("count"),s=$("countSub");let c=3;o.classList.remove("hidden");n.textContent=3;s.textContent="Valmis…";if(navigator.vibrate)navigator.vibrate(30);const q=setInterval(()=>{if(id!==prepId){clearInterval(q);return}c--;if(c){n.textContent=c;if(navigator.vibrate)navigator.vibrate(30)}else{clearInterval(q);n.textContent="START!";s.textContent="";if(navigator.vibrate)navigator.vibrate(90);setTimeout(()=>{if(id===prepId){o.classList.add("hidden");cb()}},450)}},800)}
+function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function runTimer(){clearInterval(timer);timer=setInterval(()=>{remaining--;$("timer").textContent=fmt(Math.max(0,remaining));if(remaining<=0){clearInterval(timer);timer=null;$("timerButton").textContent="Valmis ✓";if(navigator.vibrate)navigator.vibrate([120,70,120])}},1000)}
+function render(){clearInterval(timer);timer=null;const x=routine[idx];$("bar").style.width=((idx+1)/routine.length*100)+"%";$("step").textContent=`Harjutus ${idx+1} / ${routine.length}`;$("name").textContent=x.name;$("visual").innerHTML=art(x.kind);$("instruction").innerHTML=`<b>${x.dose}</b><br><br>${x.text}`;remaining=x.sec;$("timer").textContent=x.sec?fmt(x.sec):"Kordused";$("timerButton").style.display=x.sec?"block":"none";$("timerButton").textContent="Paus";prep(()=>{if(x.sec)runTimer()})}
+function start(r){if(pre===null){alert("Palun märgi enne alustamist oma pinge 0–10.");return}routine=r;idx=0;screen("work");render()}
+$("startFull").onclick=()=>start(full);$("startSOS").onclick=()=>start(sos);
+$("timerButton").onclick=()=>{if(remaining<=0)return;if(timer){clearInterval(timer);timer=null;$("timerButton").textContent="Jätka"}else{$("timerButton").textContent="Paus";runTimer()}};
+$("done").onclick=()=>{clearInterval(timer);if(++idx<routine.length)render();else{$("finishRating").textContent=`Enne trenni: ${pre}/10`;screen("finish")}};
+$("quit").onclick=()=>{prepId++;$("overlay").classList.add("hidden");clearInterval(timer);screen("home")};
+function key(off=0){let d=new Date();d.setDate(d.getDate()+off);return d.toLocaleDateString("en-CA")}
+function refresh(){const v=localStorage.getItem("ruht-"+key());$("today").textContent=v?`Tehtud ✓  Enne trenni pinge ${JSON.parse(v).pre??"–"}/10`:"Pole veel tehtud.";let c=0;for(let k=0;k<30;k++)if(localStorage.getItem("ruht-"+key(-k)))c++;$("history").textContent=`Viimase 30 päeva jooksul: ${c} treeningpäeva`}
+$("save").onclick=()=>{localStorage.setItem("ruht-"+key(),JSON.stringify({pre,at:Date.now()}));refresh();screen("home")};refresh();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").then(r=>r.update()).catch(()=>{});
 </script></body></html>
