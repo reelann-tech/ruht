@@ -47,22 +47,23 @@ button{width:100%;border:0;border-radius:17px;padding:17px;margin-top:10px;font-
 <script>
 const full=[
 ["Rindkere sirutus toolil","8 aeglast kordust","Istu stabiilselt, käed kuklal. Siruta ülaselga rahulikult üle tooli seljatoe. Ära vii liigutust alaselga.","🪑",0],
-["Ukseava rinnavenitus","30 s × 2","Küünarvars uksepiidal. Astu kergelt ette, kuni tunned rinnas õrna venitus­tunnet.","🚪",60],
+["Ukseava rinnavenitus – 1. pool","30 sekundit","Küünarvars uksepiidal. Astu kergelt ette, kuni tunned rinnas õrna venitus­tunnet.","🚪",30],["Ukseava rinnavenitus – 2. pool","30 sekundit","Vaheta poolt ja korda sama rahulikult.","🚪",30],
 ["Chin tuck","10 × 5 s","Vaata otse. Libista lõug horisontaalselt taha, nagu teeksid õrna topeltlõua. Ära kalluta pead alla.","🙂",50],
 ["Wall slides","10 aeglast kordust","Libista käsi seinal üles ja alla mugavas ulatuses. Hoia õlad kõrvadest eemal.","🙆",0],
 ["Kummilindiga sõudmine","2 × 12","Tõmba küünarnukid taha. Lase abaluudel loomulikult liikuda, ära pigista neid jõuga kokku.","🚣",0],
 ["Band pull-apart","2 × 10–12","Hoia lint ees ja vii käed kontrollitult külgedele. Rindkere püsib rahulik.","↔️",0],
 ["Õlaringid + hingamine","60 sekundit","Tee aeglased õlaringid ja 4–5 rahulikku hingetõmmet. Väljahingamisel lase õlgadel langeda.","🌿",60]];
-const sos=[full[0],full[1],full[2],full[6]];
+const sos=[full[0],full[1],full[2],full[3],full[7]];
 let routine=[],i=0,pre=null,post=null,remaining=0,interval=null;
 const $=x=>document.getElementById(x);
 function screen(id){["home","work","finish"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden");scrollTo(0,0)}
 function scale(id,label,setter){for(let n=0;n<=10;n++){let b=document.createElement("button");b.textContent=n;b.onclick=()=>{setter(n);$(label).textContent=n;[...$(id).children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected")};$(id).appendChild(b)}}
 scale("preScale","preText",v=>pre=v);scale("postScale","postText",v=>post=v);
 function start(r){routine=r;i=0;screen("work");render()}
-function render(){clearInterval(interval);interval=null;let x=routine[i];$("bar").style.width=((i+1)/routine.length*100)+"%";$("step").textContent=`Harjutus ${i+1} / ${routine.length}`;$("name").textContent=x[0];$("visual").textContent=x[3];$("instruction").innerHTML=`<b>${x[1]}</b><br><br>${x[2]}`;remaining=x[4];$("timer").textContent=remaining?fmt(remaining):"Kordused";$("timerButton").style.display=remaining?"block":"none";$("timerButton").textContent="Käivita taimer"}
+function render(){clearInterval(interval);interval=null;let x=routine[i];$("bar").style.width=((i+1)/routine.length*100)+"%";$("step").textContent=`Harjutus ${i+1} / ${routine.length}`;$("name").textContent=x[0];$("visual").textContent=x[3];$("instruction").innerHTML=`<b>${x[1]}</b><br><br>${x[2]}`;remaining=x[4];$("timer").textContent=remaining?fmt(remaining):"Kordused";$("timerButton").style.display=remaining?"block":"none";$("timerButton").textContent="Paus"; if(remaining){ startCountdown(); }}
 const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
-$("timerButton").onclick=()=>{if(interval){clearInterval(interval);interval=null;$("timerButton").textContent="Jätka";return}$("timerButton").textContent="Paus";interval=setInterval(()=>{remaining--;$("timer").textContent=fmt(Math.max(0,remaining));if(remaining<=0){clearInterval(interval);interval=null;$("timerButton").textContent="Valmis ✓";if(navigator.vibrate)navigator.vibrate([150,80,150])}},1000)};
+function startCountdown(){clearInterval(interval);interval=setInterval(()=>{remaining--;$("timer").textContent=fmt(Math.max(0,remaining));if(remaining<=0){clearInterval(interval);interval=null;$("timerButton").textContent="Valmis ✓";if(navigator.vibrate)navigator.vibrate([150,80,150])}},1000)}
+$("timerButton").onclick=()=>{if(remaining<=0)return;if(interval){clearInterval(interval);interval=null;$("timerButton").textContent="Jätka"}else{$("timerButton").textContent="Paus";startCountdown()}};
 $("done").onclick=()=>{clearInterval(interval);if(++i<routine.length)render();else screen("finish")};
 $("startFull").onclick=()=>start(full);$("startSOS").onclick=()=>start(sos);$("quit").onclick=()=>{clearInterval(interval);screen("home")};
 function dateKey(offset=0){let d=new Date();d.setDate(d.getDate()+offset);return d.toLocaleDateString("en-CA")}
