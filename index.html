@@ -27,7 +27,7 @@
 </section>
 <section id="work" class="hidden"><div class="progress"><div id="bar"></div></div><p id="step" class="meta"></p>
 <div class="card"><h2 id="name"></h2><div id="visual" class="visual"></div><p id="instruction"></p><div id="timer" class="timer"></div>
-<button id="timerButton" class="btn primary">Paus</button><button id="done" class="btn secondary">Tehtud →</button>
+<button id="exerciseStart" class="btn primary">START</button><button id="timerButton" class="btn primary hidden">Paus</button><button id="done" class="btn secondary hidden">Tehtud →</button>
 <div class="tip">Kui tekib terav või kätte kiirguv valu, tuimus või nõrkus, lõpeta harjutus.</div></div>
 <button id="quit" class="btn secondary">← Avalehele</button></section>
 <section id="finish" class="hidden"><span class="pill">KAVA TEHTUD ✓</span><h1>Hästi tehtud.</h1><p>Salvestame tänase treeningu koos enne alustamist antud pingehinnanguga.</p><div class="card"><h2 id="finishRating"></h2><p>Järjepidevus on siin olulisem kui täiuslik sooritus.</p></div><button id="save" class="btn primary">Salvesta tänane trenn</button></section>
@@ -44,7 +44,13 @@ const full=[
 ],sos=[full[0],full[1],full[2],full[3],full[7]];
 let routine=[],idx=0,pre=null,remaining=0,timer=null,prepId=0;
 const $=id=>document.getElementById(id);
-function person(extra="",group=""){return `<svg viewBox="0 0 300 230"><g class="${group}"><circle class="skin" cx="150" cy="48" r="24"/><path class="person" d="M150 73V148 M150 92L108 118 M150 92L192 118 M150 146L122 202 M150 146L178 202"/></g>${extra}</svg>`}
+function person(extra="",group=""){return `<svg viewBox="0 0 300 230"><g class="${group}">
+<circle class="skin" cx="150" cy="45" r="24"/>
+<path d="M128 72 Q150 62 172 72 L180 137 Q150 153 120 137 Z" fill="#829b88"/>
+<path d="M128 80 Q110 92 98 118" fill="none" stroke="#d7b49b" stroke-width="17" stroke-linecap="round"/>
+<path d="M172 80 Q190 92 202 118" fill="none" stroke="#d7b49b" stroke-width="17" stroke-linecap="round"/>
+<path d="M137 140 L123 198 M163 140 L177 198" fill="none" stroke="#344039" stroke-width="18" stroke-linecap="round"/>
+</g>${extra}</svg>`}
 function art(k){
 if(k==="thoracic")return person('<path class="guide" d="M92 76Q150 25 208 76M98 65L88 77L103 82"/>',"a-body");
 if(k==="chin")return `<svg viewBox="0 0 300 230"><path class="person" d="M150 74V165"/><g class="a-head"><circle class="skin" cx="150" cy="48" r="25"/></g><path class="guide" d="M205 48H118M130 37L117 48L130 59"/></svg>`;
@@ -59,9 +65,34 @@ for(let n=0;n<=10;n++){const b=document.createElement("button");b.textContent=n;
 function prep(cb){const id=++prepId,o=$("overlay"),n=$("count"),s=$("countSub");let c=3;o.classList.remove("hidden");n.textContent=3;s.textContent="Valmis…";if(navigator.vibrate)navigator.vibrate(30);const q=setInterval(()=>{if(id!==prepId){clearInterval(q);return}c--;if(c){n.textContent=c;if(navigator.vibrate)navigator.vibrate(30)}else{clearInterval(q);n.textContent="START!";s.textContent="";if(navigator.vibrate)navigator.vibrate(90);setTimeout(()=>{if(id===prepId){o.classList.add("hidden");cb()}},450)}},800)}
 function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function runTimer(){clearInterval(timer);timer=setInterval(()=>{remaining--;$("timer").textContent=fmt(Math.max(0,remaining));if(remaining<=0){clearInterval(timer);timer=null;$("timerButton").textContent="Valmis ✓";if(navigator.vibrate)navigator.vibrate([120,70,120])}},1000)}
-function render(){clearInterval(timer);timer=null;const x=routine[idx];$("bar").style.width=((idx+1)/routine.length*100)+"%";$("step").textContent=`Harjutus ${idx+1} / ${routine.length}`;$("name").textContent=x.name;$("visual").innerHTML=art(x.kind);$("instruction").innerHTML=`<b>${x.dose}</b><br><br>${x.text}`;remaining=x.sec;$("timer").textContent=x.sec?fmt(x.sec):"Kordused";$("timerButton").style.display=x.sec?"block":"none";$("timerButton").textContent="Paus";prep(()=>{if(x.sec)runTimer()})}
+function render(){
+ clearInterval(timer);timer=null;
+ const x=routine[idx];
+ $("bar").style.width=((idx+1)/routine.length*100)+"%";
+ $("step").textContent=`Harjutus ${idx+1} / ${routine.length}`;
+ $("name").textContent=x.name;
+ $("visual").innerHTML=art(x.kind);
+ $("instruction").innerHTML=`<b>${x.dose}</b><br><br>${x.text}`;
+ remaining=x.sec;
+ $("timer").textContent=x.sec?fmt(x.sec):"Kordused";
+ $("exerciseStart").classList.remove("hidden");
+ $("timerButton").classList.add("hidden");
+ $("done").classList.add("hidden");
+ $("timerButton").textContent="Paus";
+}
 function start(r){if(pre===null){alert("Palun märgi enne alustamist oma pinge 0–10.");return}routine=r;idx=0;screen("work");render()}
 $("startFull").onclick=()=>start(full);$("startSOS").onclick=()=>start(sos);
+$("exerciseStart").onclick=()=>{
+ const x=routine[idx];
+ $("exerciseStart").classList.add("hidden");
+ prep(()=>{
+   $("done").classList.remove("hidden");
+   if(x.sec){
+     $("timerButton").classList.remove("hidden");
+     runTimer();
+   }
+ });
+};
 $("timerButton").onclick=()=>{if(remaining<=0)return;if(timer){clearInterval(timer);timer=null;$("timerButton").textContent="Jätka"}else{$("timerButton").textContent="Paus";runTimer()}};
 $("done").onclick=()=>{clearInterval(timer);if(++idx<routine.length)render();else{$("finishRating").textContent=`Enne trenni: ${pre}/10`;screen("finish")}};
 $("quit").onclick=()=>{prepId++;$("overlay").classList.add("hidden");clearInterval(timer);screen("home")};
